@@ -1,0 +1,283 @@
+def cadenasDesm(cadena, folio, segmento):
+    resultado=[]
+    tamañoCadena=0
+    inicio=0
+    fin=2
+    numeroTL=0
+    numeroTL2=2
+    numeroIQ=0
+    numeroIQ2=2
+    meses = -1
+    fecha = '0'
+    folioBCTL = '0'
+    mop96 = 'No'
+    mop96_24='No'
+    mop03 = 'No'
+    mop03Fiscal = 'No'
+    mop04 = 'No'
+    mop99 = 'No'
+    suspencionPagos = 'No'
+    claveLG = 'No'
+    reestructuradas = 'No'
+    referenciasCrediticias = 'No'
+    referenciasCrediticiasNew = 'No'
+    fechaActualizacion = -1
+    memberCode = ''
+    nombreBanco = ''
+    Dun_Brand = ''
+    tipoCuenta = ''
+    tipoContractoProducto = ''
+    moneda = ''
+    frecuencia = ''
+    montoPagar = 0
+    fechaApertura = -1
+    ultimoPago = '0'
+    fechaCierre = -1
+    fechaReporteInformacion = -1
+    creditoMaxAutorizado = ''
+    saldoActual = ''
+    limiteCredito = ''
+    saldoVencido = ''
+    numPagosVencidos = ''
+    mop = ''
+    historicoPagos = ''
+    fechaMasRecienteHistoricoPagos = ''
+    claveObservacion = '' 
+    mop2 = ''
+    mop3 = ''
+    mop4 = ''
+    mop5 = ''
+    saldoMopMasAlto = -1
+    fechaMOPMasAlto = -1
+    mopMasAlto = ''
+    bandera = 0
+    sumatoriaSaldoActual = 0
+    sumatoriaPagoFijo = 0
+    sumatoriaSaldoActualPers = 0
+    sumatoriaSaldoActualAuto = 0
+    sumatoriaPagoFijoPers = 0
+    sumatoriaPagoFijoAuto = 0
+    expMaxima = 0
+    cargaBCNomina = 0
+    cargaBCPERS = 0
+    cargaBCAUT =0
+    fechaConsulta = -1
+    claveoMember = ''
+    nombreUsuario = ''
+    tipoContrato = ''
+    consultasBC = 0
+
+    for i in cadena:
+        try:
+            tamañoCadena=len(cadena)
+            if tamañoCadena == inicio:
+                numeroTL+=1
+                numeroIQ2+=1
+            else:
+                valor='0'
+                lista=cadena[inicio:fin]
+                suma=cadena[inicio+2:fin+2]
+                valor=cadena[fin+2:fin+2+int(suma)]
+                valor=valor.replace('+','')
+                resultado.append(folio+'|'+segmento+'|'+lista+'|'+valor)
+                if segmento == 'PN':
+                    if lista == '05':
+                        rfc.append(folio+'|'+valor)
+                inicio=fin+2+int(suma)
+                fin=inicio+2
+        except:
+            pass
+        if segmento == 'TL':
+            if lista == 'TL':
+                numeroTL+=1
+            elif lista == '01': memberCode = valor
+            elif lista == '02': nombreBanco = valor
+            elif lista == '03': Dun_Brand = valor
+            elif lista == '06': tipoCuenta = valor
+            elif lista == '07': tipoContractoProducto = valor
+            elif lista == '08': moneda = valor
+            elif lista == '11': frecuencia = valor
+            elif lista == '12': montoPagar = valor
+            elif lista == '13': fechaApertura = mesesFecha(valor)
+            elif lista == '14': ultimoPago = mesesFecha(valor)
+            elif lista == '16': fechaCierre = mesesFecha(valor)
+            elif lista == '17': fechaReporteInformacion = mesesFecha(valor)
+            elif lista == '21': creditoMaxAutorizado = valor
+            elif lista == '22': saldoActual = valor
+            elif lista == '23': limiteCredito = valor
+            elif lista == '24': saldoVencido = valor
+            elif lista == '25': numPagosVencidos = valor
+            elif lista == '26': mop = valor
+            elif lista == '27': historicoPagos = valor
+            elif lista == '28': fechaMasRecienteHistoricoPagos = mesesFecha(valor)
+            elif lista == '30': claveObservacion = valor
+            elif lista == '32': mop2 = valor
+            elif lista == '33': mop3 = valor
+            elif lista == '34': mop4 = valor
+            elif lista == '35': mop5 = valor
+            elif lista == '36': saldoMopMasAlto = valor
+            elif lista == '37': fechaMOPMasAlto = mesesFecha(valor)
+            elif lista == '38': mopMasAlto = valor
+            else:
+                pass
+        if numeroTL == numeroTL2:
+            numeroTL2+=1
+            if fechaActualizacion <= 36 and fechaActualizacion >= 0 and corregirString(nombreBanco) not in comunicaciones and corregirString(nombreBanco) not in servicios and mop96 == 'No':
+                if ((corregirInteger(mop) >= 96 and corregirInteger(mop) < 99) and (corregirInteger(saldoVencido) >= 2500 or corregirInteger(saldoActual) >= 2500)) or (mopCadena(historicoPagos, fechaMasRecienteHistoricoPagos, 9, 36) and (corregirInteger(saldoVencido) >= 2500 or corregirInteger(saldoActual) >= 2500)) or (corregirString(claveObservacion) == 'UP' and (corregirInteger(saldoVencido) >= 2500 or corregirInteger(saldoActual) >= 2500)) or ((corregirInteger(mopMasAlto) >= 96 and corregirInteger(mopMasAlto) < 99) and fechaMOPMasAlto <= 36 and (corregirInteger(saldoVencido) >= 2500 or corregirInteger(saldoActual) >= 2500 or corregirInteger(saldoMopMasAlto) >= 2500)):
+                    mop96 = 'Si'
+            if fechaActualizacion <= 24 and fechaActualizacion >= 0 and corregirString(nombreBanco) not in comunicaciones and corregirString(nombreBanco) not in servicios and mop96_24 == 'No':
+                if ((corregirInteger(mop) >= 96 and corregirInteger(mop) < 99) and (corregirInteger(saldoVencido) >= 2500 or corregirInteger(saldoActual) >= 2500)) or (mopCadena(historicoPagos, fechaMasRecienteHistoricoPagos, 9, 24) and (corregirInteger(saldoVencido) >= 2500 or corregirInteger(saldoActual) >= 2500)) or (corregirString(claveObservacion) == 'UP' and (corregirInteger(saldoVencido) >= 2500 or corregirInteger(saldoActual) >= 2500)) or ((corregirInteger(mopMasAlto) >= 96 and corregirInteger(mopMasAlto) < 99) and fechaMOPMasAlto <= 24 and (corregirInteger(saldoVencido) >= 2500 or corregirInteger(saldoActual) >= 2500 or corregirInteger(saldoMopMasAlto) >= 2500)):
+                    mop96_24 = 'Si'
+            if fechaActualizacion <= 12 and fechaActualizacion >= 0 and corregirString(nombreBanco) not in comunicaciones and corregirString(nombreBanco) not in servicios and mop03 == 'No':
+                if (corregirInteger(mop) >= 3 and corregirInteger(mop) < 96 and (corregirInteger(saldoVencido) >= 1500)) or (mopCadena(historicoPagos, fechaMasRecienteHistoricoPagos, 3, 12) and (corregirInteger(saldoVencido) >= 1500)) or (corregirInteger(mopMasAlto) >= 3 and corregirInteger(mopMasAlto) < 96 and (fechaMOPMasAlto) <= 12 and (corregirInteger(saldoVencido) >= 1500 or corregirInteger(saldoMopMasAlto) >= 1500)):
+                    mop03 = 'Si'
+            if fechaActualizacion <= 12 and fechaActualizacion >= 0 and corregirString(tipoContractoProducto) == 'CF' and mop03Fiscal == 'No':
+                if (corregirInteger(mop) >= 3 and corregirInteger(mop) < 96 and (corregirInteger(saldoVencido) >= 1500)) or (mopCadena(historicoPagos, fechaMasRecienteHistoricoPagos, 3, 12) and (corregirInteger(saldoVencido) >= 1500)) or (corregirInteger(mopMasAlto) >= 3 and corregirInteger(mopMasAlto) < 96 and (fechaMOPMasAlto) <= 12 and (corregirInteger(saldoVencido) >= 1500 or corregirInteger(saldoMopMasAlto) >= 1500)):
+                    mop03Fiscal = 'Si'
+            if fechaActualizacion <= 12 and fechaActualizacion >= 0 and corregirString(nombreBanco) not in comunicaciones and corregirString(nombreBanco) not in servicios and mop04 == 'No':
+                if (corregirInteger(mop) >= 4 and corregirInteger(mop) < 96 and (corregirInteger(saldoVencido) >= 1500)) or (mopCadena(historicoPagos, fechaMasRecienteHistoricoPagos, 4, 1) and (corregirInteger(saldoVencido) >= 1500)):
+                    mop04 = 'Si'
+            if (corregirInteger(mop) >= 99) or (corregirInteger(mopMasAlto) >= 99 or corregirString(claveObservacion) == 'FD'):
+                mop99 = 'Si'
+            if fechaActualizacion <= 12 and fechaActualizacion >= 0:
+                if (corregirString(claveObservacion) in suspPagos):
+                    suspencionPagos = 'Si'
+            if (corregirString(claveObservacion) == 'LG'):
+                claveLG = 'Si'
+            if fechaActualizacion <= 12 and fechaActualizacion >= 0:
+                if corregirString(claveObservacion) in reestLista: 
+                    if corregirInteger(saldoActual) > (corregirInteger(limiteCredito)*0.5):
+                        reestructuradas = 'Si'
+            if fechaApertura >= 12 and fechaCierre < 0 and corregirString(nombreBanco) not in comunicaciones and corregirString(nombreBanco) not in servicios and corregirString(nombreBanco) not in gobierno:
+                referenciasCrediticias = 'Si'
+            if fechaApertura >= 6 and float(ultimoPago) <= 24 and corregirString(nombreBanco) not in comunicaciones and corregirString(nombreBanco) not in servicios and corregirString(nombreBanco) not in gobierno:
+                referenciasCrediticiasNew = 'Si'
+            if tipoContractoProducto != tipoContratoProductoNoValidos and Dun_Brand != '2' and fechaCierre < 0 and fechaActualizacion <= 12 and nombreBanco not in comunicaciones and nombreBanco not in servicios and nombreBanco not in hipotecaGob and nombreBanco not in hipoBajio:
+                if tipoCuenta == 'R':
+                    expMaxima = expMaxima + float(limiteCredito)
+                elif tipoCuenta == 'I':
+                    expMaxima = expMaxima + float(saldoActual)
+                elif tipoCuenta == 'O':
+                    expMaxima = expMaxima + max(float(corregirInteger(saldoActual)), float(corregirInteger(limiteCredito)))
+            if Dun_Brand != '2' and fechaCierre < 0 and fechaActualizacion <= 12 and nombreBanco not in comunicaciones and nombreBanco not in servicios and nombreBanco not in hipotecaGob and tipoContractoProducto not in tipoContratoProductoNoValidosNOM and nombreBanco not in nominaNoValido:
+                bandera = 0
+                if tipoContractoProducto == 'PN':
+                    if memberCode != '':
+                        bandera = 1
+                if bandera == 0:
+                    if tipoCuenta == 'R':
+                        sumatoriaSaldoActual = sumatoriaSaldoActual + (float(saldoActual)*.07)
+                    elif tipoCuenta == 'O':
+                        sumatoriaPagoFijo = sumatoriaPagoFijo + float(saldoActual)
+                    elif tipoCuenta == 'I' or tipoCuenta == 'M':
+                        sumatoriaPagoFijo = sumatoriaPagoFijo + pagoFrecuencia(frecuencia,moneda,saldoActual,montoPagar)
+                    cargaBCNomina = sumatoriaSaldoActual + sumatoriaPagoFijo
+            if Dun_Brand != '2' and fechaCierre < 0 and fechaActualizacion <= 12 and nombreBanco not in comunicaciones and nombreBanco not in servicios and tipoContractoProducto not in tipoContratoProductoNoValidosPER and nombreBanco not in nominaNoValido:
+                bandera = 0
+                if tipoContractoProducto == 'PL':
+                    if memberCode != '':
+                        bandera = 1
+                if bandera == 0:
+                    if tipoCuenta == 'R':
+                        sumatoriaSaldoActualPers = sumatoriaSaldoActualPers + float(saldoActual)*.10
+                    elif tipoCuenta == 'O':
+                        sumatoriaPagoFijoPers = sumatoriaPagoFijoPers + float(saldoActual)
+                    elif tipoCuenta == 'I' or tipoCuenta == 'M':
+                        sumatoriaPagoFijoPers = sumatoriaPagoFijoPers + pagoFrecuencia(frecuencia,moneda,saldoActual,montoPagar)
+                    cargaBCPERS = sumatoriaSaldoActualPers + sumatoriaPagoFijoPers
+            if Dun_Brand != '2' and fechaCierre < 0 and fechaActualizacion <= 12 and nombreBanco not in comunicaciones and nombreBanco not in servicios and tipoContractoProducto not in tipoContratoProductoNoValidosPER and nombreBanco not in nominaNoValido:
+                bandera = 0
+                if tipoContractoProducto == 'AU':
+                    if memberCode != '':
+                        bandera = 1
+                if bandera == 0:
+                    if tipoCuenta == 'R':
+                        sumatoriaSaldoActualAuto = sumatoriaSaldoActualAuto + float(saldoActual)*.07
+                    elif tipoCuenta == 'O':
+                        sumatoriaPagoFijoAuto = sumatoriaPagoFijoAuto + float(saldoActual)
+                    elif tipoCuenta == 'I' or tipoCuenta == 'M':
+                        sumatoriaPagoFijoAuto = sumatoriaPagoFijoAuto + pagoFrecuencia(frecuencia,moneda,saldoActual,montoPagar)
+                    cargaBCAUT = sumatoriaSaldoActualAuto + sumatoriaPagoFijoAuto
+            fechaActualizacion = -1
+            memberCode = ''
+            nombreBanco = ''
+            Dun_Brand = ''
+            tipoCuenta = ''
+            tipoContractoProducto = ''
+            moneda = ''
+            frecuencia = ''
+            montoPagar = 0
+            fechaApertura = -1
+            ultimoPago = '0'
+            fechaCierre = -1
+            fechaReporteInformacion = -1
+            creditoMaxAutorizado = ''
+            saldoActual = ''
+            limiteCredito = ''
+            saldoVencido = ''
+            numPagosVencidos = ''
+            mop = ''
+            historicoPagos = ''
+            fechaMasRecienteHistoricoPagos = ''
+            claveObservacion = '' 
+            mop2 = ''
+            mop3 = ''
+            mop4 = ''
+            mop5 = ''
+            saldoMopMasAlto = -1
+            fechaMOPMasAlto = -1
+            mopMasAlto = ''
+            bandera = 0
+        if lista == 'TL':
+            fechaActualizacion = mesesFecha(valor)
+        if segmento == 'IQ': 
+            if lista == 'IQ':
+                numeroIQ+=1
+            elif lista == '01': claveoMember = valor
+            elif lista == '02': nombreUsuario = valor
+            elif lista == '04': tipoContrato = valor
+            else:
+                pass
+        if numeroIQ == numeroIQ2:
+            numeroIQ2+=1
+            if fechaConsulta <= 6 and fechaConsulta >= 0 and corregirString(nombreUsuario) not in IQConsultas:
+                consultasBC = consultasBC + 1
+            nombreUsuario=''
+            fechaConsulta=''
+        if lista == 'IQ':
+            fechaConsulta = mesesFecha(valor)
+            
+    if segmento == 'TL':
+        global politstr
+        politicaNomina='No'
+        politicaPersonal='No'
+        politicaAuto='No'
+        politicaTDC='No'
+        if mop96_24 == 'No' and mop03 == 'No' and mop03Fiscal == 'No' and mop99 == 'No' and suspencionPagos == 'No' and claveLG == 'No' and reestructuradas == 'No' and referenciasCrediticiasNew == 'Si':
+            politicaPersonal = 'OK'
+        if mop96_24 == 'No' and mop03 == 'No' and mop03Fiscal == 'No' and mop99 == 'No' and suspencionPagos == 'No' and claveLG == 'No' and reestructuradas == 'No':
+            politicaTDC = 'OK'
+        if mop96 == 'No' and mop03 == 'No' and mop03Fiscal == 'No' and mop99 == 'No' and suspencionPagos == 'No' and claveLG == 'No' and reestructuradas == 'No':
+            politicaAuto = 'OK'
+        if mop96 == 'No' and mop04 == 'No' and mop99 == 'No' and claveLG == 'No' and reestructuradas == 'No':
+            politicaNomina = 'OK'
+        politicasBC.append(str(folio)+'|'+str(mop96)+'|'+str(mop96_24)+'|'+str(mop03)+'|'+str(mop03Fiscal)+'|'+str(mop04)+'|'+str(mop99)+'|'+str(suspencionPagos)+'|'+str(claveLG)+'|'+str(reestructuradas)+'|'+str(referenciasCrediticias)+'|'+str(referenciasCrediticiasNew)+'|'+str(expMaxima)+'|'+str(cargaBCNomina)+'|'+str(cargaBCPERS)+'|'+str(cargaBCAUT)+'|'+str(politicaNomina)+'|'+str(politicaPersonal)+'|'+str(politicaAuto)+'|'+str(politicaTDC))
+        politstr = str(str(folio)+'|'+str(mop96)+'|'+str(mop96_24)+'|'+str(mop03)+'|'+str(mop03Fiscal)+'|'+str(mop04)+'|'+str(mop99)+'|'+str(suspencionPagos)+'|'+str(claveLG)+'|'+str(reestructuradas)+'|'+str(referenciasCrediticias)+'|'+str(referenciasCrediticiasNew)+'|'+str(expMaxima)+'|'+str(cargaBCNomina)+'|'+str(cargaBCPERS)+'|'+str(cargaBCAUT)+'|'+str(politicaNomina)+'|'+str(politicaPersonal)+'|'+str(politicaAuto)+'|'+str(politicaTDC))
+        sumatoriaSaldoActual = 0
+        sumatoriaPagoFijo = 0
+        sumatoriaSaldoActualPers = 0
+        sumatoriaSaldoActualAuto = 0
+        sumatoriaPagoFijoPers = 0
+        sumatoriaPagoFijoAuto = 0
+        expMaxima = 0
+        cargaBCNomina = 0
+        cargaBCPERS = 0
+        cargaBCAUT = 0
+    if segmento == 'IQ':
+        politicasBCIQ.append(politstr+'|'+str(consultasBC))
+        consultasBC = 0
+        fechaConsulta = -1
+        claveoMember = ''
+        nombreUsuario = ''
+        tipoContrato = ''
+    return resultado
